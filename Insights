@@ -1,0 +1,106 @@
+🚇 London's Travel Network Analysis
+
+📊 Overview
+
+This analysis explores transport usage patterns across different journey types using the `TFL.JOURNEYS` dataset. The goal is to identify:
+
+* Most popular transport types
+* Trends in Emirates Airline usage
+* Least popular years for Underground & DLR
+
+
+🥇 Most Popular Transport Types
+
+```sql
+SELECT JOURNEY_TYPE, SUM(JOURNEYS_MILLIONS) AS TOTAL_JOURNEYS_MILLIONS
+FROM TFL.JOURNEYS
+GROUP BY JOURNEY_TYPE
+ORDER BY TOTAL_JOURNEYS_MILLIONS DESC;
+```
+
+🔍 Insights
+
+*Bus is the most used transport mode (~24,905 million journeys).
+*Underground & DLR** follows as the second most popular (~15,020 million journeys).
+*Overground** and **TfL Rail** have moderate usage.
+*Emirates Airline** is the least used by a large margin (~14.6 million total journeys).
+
+👉Conclusion:
+Public ground transport dominates London mobility, with buses leading significantly due to accessibility and coverage.
+
+
+✈️ Emirates Airline Popularity
+
+```sql
+SELECT MONTH, YEAR, ROUND(JOURNEYS_MILLIONS,2) AS ROUNDED_JOURNEYS_MILLIONS
+FROM TFL.JOURNEYS
+WHERE JOURNEY_TYPE = 'Emirates Airline'
+ORDER BY ROUNDED_JOURNEYS_MILLIONS DESC
+LIMIT 5;
+```
+
+🔍 Top 5 Months
+
+| Month | Year | Journeys (Millions) |
+| ----- | ---- | ------------------- |
+| May   | 2012 | 0.53                |
+| June  | 2012 | 0.38                |
+| April | 2012 | 0.24                |
+| May   | 2013 | 0.19                |
+| May   | 2015 | 0.19                |
+
+📌 Insights
+
+* Peak usage occurred in **2012**, shortly after launch (Olympics effect likely).
+* Usage drops significantly after the initial years.
+* Overall demand remains **very low compared to other transport types**.
+
+👉Conclusion:
+Emirates Airline serves more as a **tourist/novelty transport** rather than a core commuting option.
+
+
+🚉 Least Popular Years (Underground & DLR)
+
+```sql
+SELECT YEAR, JOURNEY_TYPE, SUM(JOURNEYS_MILLIONS) AS TOTAL_JOURNEYS_MILLIONS
+FROM TFL.JOURNEYS
+WHERE JOURNEY_TYPE = 'Underground & DLR'
+GROUP BY YEAR, JOURNEY_TYPE
+ORDER BY TOTAL_JOURNEYS_MILLIONS ASC
+LIMIT 5;
+```
+
+🔍 Bottom 5 Years
+
+| Year | Total Journeys (Millions) |
+| ---- | ------------------------- |
+| 2020 | 310.18                    |
+| 2021 | 748.45                    |
+| 2022 | 1064.86                   |
+| 2010 | 1096.15                   |
+| 2011 | 1156.65                   |
+
+📌 Insights
+
+*2020 recorded the lowest usage by far**, due to COVID-19 lockdowns.
+*2021 shows partial recovery**, but still below normal levels.
+*Pre-pandemic years (2010–2011) were also relatively lower compared to peak years.
+
+👉 Conclusion:
+The Underground system was heavily impacted by the pandemic, with a gradual recovery trend afterward.
+
+
+📈 Key Takeaways
+
+🚌 Buses dominate London transport usage.
+🚇 Underground remains critical but is sensitive to external disruptions (e.g., COVID-19).
+✈️ Emirates Airline has minimal impact on overall transport volume.
+📉 2020–2021 disruption is clearly visible across major transport systems.
+
+
+🛠️ Recommendations
+
+* Invest further in bus and underground infrastructure due to high demand.
+* Improve resilience planning for future disruptions (pandemics, strikes, etc.).
+* Re-evaluate the cost-effectiveness of low-usage transport modes like Emirates Airline.
+
